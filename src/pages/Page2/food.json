@@ -1,0 +1,65 @@
+[
+  {
+    "food": "chowmin",
+    "rate": {
+      "half": 25,
+      "full": 50
+    },
+    "image": "https://thumbs.dreamstime.com/b/asian-stir-fry-noodles-8334087.jpg",
+    "description": "Delicious stir-fried noodles with a variety of vegetables and sauces."
+  },
+  {
+    "food": "momos",
+    "rate": {
+      "half": 25,
+      "full": 50
+    },
+    "image": "https://thumbs.dreamstime.com/b/chinese-food-steamed-vegeterian-steamed-dumpling-dimsum-41479255.jpg",
+    "description": "Steamed dumplings with a savory filling, typically served with spicy sauce."
+  },
+  {
+    "food": "soup",
+    "rate": {
+      "half": 25,
+      "full": 50
+    },
+    "image": "https://thumbs.dreamstime.com/b/autumn-leaves-sweet-potato-soup-roasted-cashew-91257828.jpg",
+    "description": "Warm and comforting soup with a rich blend of flavors and wholesome ingredients."
+  },
+  {
+    "food": "chilly momos",
+    "rate": {
+      "half": 25,
+      "full": 50
+    },
+    "image": "https://thumbs.dreamstime.com/b/vegetarian-tibetan-momo-beans-21328588.jpg",
+    "description": "Spicy momos tossed in a tangy chili sauce, a perfect blend of heat and flavor."
+  },
+  {
+    "food": "burger",
+    "rate": {
+      "half": 0,
+      "full": 30
+    },
+    "image": "https://thumbs.dreamstime.com/b/burger-black-940097.jpg",
+    "description": "Juicy patty sandwiched between soft buns, topped with fresh vegetables and condiments."
+  },
+  {
+    "food": "macroni",
+    "rate": {
+      "half": 25,
+      "full": 50
+    },
+    "image": "https://thumbs.dreamstime.com/b/macroni-food-love-tasty-tastebuds-happy-72671184.jpg",
+    "description": "Creamy macaroni pasta dish loaded with vegetables and a delicious cheese sauce."
+  },
+  {
+    "food": "food roll",
+    "rate": {
+      "half": 0,
+      "full": 30
+    },
+    "image": "https://thumbs.dreamstime.com/b/colorful-mexican-food-12628575.jpg",
+    "description": "A delightful combination of flavors wrapped in a thin bread roll, bursting with taste."
+  }
+]
