@@ -19,9 +19,9 @@ export default defineConfig({
         "display": "standalone",
         "scope": "/",
         "start_url": "/",
-        "short_name": "Vite PWA",
+        "short_name": "MA Food",
         "description": "Vite PWA Boilerplate",
-        "name": "Vite PWA Boilerplate",
+        "name": "MA Food Plaza",
         "icons": [
             {
                 "src": "/icon-192x192.png",

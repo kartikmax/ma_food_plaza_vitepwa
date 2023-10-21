@@ -1,14 +1,22 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Welcome from "./pages/Welcome";
+import AddToCart from "./pages/AddToCart/AddToCart";
+import Category from "./pages/Category";
 import Page2 from "./pages/Page2";
+import Welcome from "./pages/Welcome";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Payment from "./pages/PaymentMethod/Payment";
+
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/welcome" element={<Welcome />} />
-        <Route path="/page-2" element={<Page2 />} />
         <Route path="/" element={<Welcome />} />
+        <Route path="/cart" element={<AddToCart/>} />
+        <Route path="/category" element={<Category/>} />
+        <Route path="/page" element={<Page2 />} />
+        <Route path="/welcome" element={<Welcome />} />
+        <Route path="/pay" element={<Payment />} />
+        <Route path="/cart" element={<AddToCart/>} />
       </Routes>
     </Router>
   );

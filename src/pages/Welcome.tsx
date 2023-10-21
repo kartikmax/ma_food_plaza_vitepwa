@@ -1,10 +1,11 @@
 import { Container, Grid, Typography } from "@mui/material";
-
+import "../index.css";
 import maskGp1 from "../assets/mask-group7@2x.png";
 import maskGp2 from "../assets/mask-group8@2x.png";
 import manToy from "../assets/toyfaces-tansparent-bg-29@2x.png";
 import womanToy from "../assets/toyfaces-tansparent-bg-49@2x.png";
 import Login from "./Login";
+import FloatingNavBar from "../components/FloatingNavbar";
 // import Login from "@/components/Login";
 
 function Welcome() {
@@ -12,7 +13,7 @@ function Welcome() {
   const height = "48%";
 
   return (
-    <div>
+    <>
       {/* <Meta title="Welcome" /> */}
       <Container maxWidth="md">
         <Grid
@@ -44,8 +45,9 @@ function Welcome() {
             <img alt="woman" src={maskGp2} width={width} height={height} />
           </Grid>
         </Grid>
+        <FloatingNavBar />
       </Container>
-    </div>
+    </>
   );
 }
 

@@ -1,0 +1,8 @@
+screens 
+  --
+  login screen -c 
+  homepage
+  categories
+  add to CardContent
+  address (google maps and both manual) take phone no also take no
+  payment method (google pay and cash on delivery)
