@@ -4,6 +4,7 @@ import Page2 from "./pages/Page2";
 import Welcome from "./pages/Welcome";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Payment from "./pages/PaymentMethod/Payment";
+import Account from "./pages/AccountDetails/Account";
 
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/pay" element={<Payment />} />
         <Route path="/cart" element={<AddToCart/>} />
+        <Route path="/account" element={<Account/>} />
       </Routes>
     </Router>
   );

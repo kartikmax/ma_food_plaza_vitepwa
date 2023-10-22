@@ -7,12 +7,10 @@ const AddToCart: React.FC = () => {
     <Container maxWidth="xs">
       <Paper elevation={3} className="p-4 rounded-md shadow-md">
         <Typography variant="h5" align="center" gutterBottom>
-          Zomato Cart
+          Food Cart
         </Typography>
         <Grid container spacing={2}>
-          {/* Food item list */}
           <Grid item xs={12}>
-            {/* Replace with your food item list */}
             <div className="flex justify-between items-center mb-2">
               <div>
                 <Typography variant="body1">Food Item 1</Typography>
@@ -21,17 +19,15 @@ const AddToCart: React.FC = () => {
                 </Typography>
               </div>
               <div>
-                {/* Add to cart button */}
                 <Button variant="outlined" size="small">
                   Add
                 </Button>
               </div>
             </div>
-            {/* Repeat this section for each food item */}
+            
           </Grid>
         </Grid>
 
-        {/* Cart summary */}
         <div className="mt-4">
           <Typography variant="h6">Cart Summary</Typography>
           <Typography variant="body2" color="textSecondary">

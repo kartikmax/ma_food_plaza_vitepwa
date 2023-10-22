@@ -2,9 +2,11 @@ import Card from "./Card";
 import foodData from "./food.json";
 import { Container, Paper } from "@mui/material";
 import FloatingNavBar from "../../components/FloatingNavbar";
+import AppHeader from "../../components/AppHeader";
 
 const Page2 = () => (
   <Container>
+    <AppHeader/>
     <Paper
       elevation={3}
       style={{
