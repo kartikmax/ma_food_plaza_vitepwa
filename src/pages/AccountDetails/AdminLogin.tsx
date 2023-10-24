@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TextField,
   Button,
@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogActions,
   Input,
+  CircularProgress, // Add Circular Progress component
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import FoodItem from "./FoodItem";
@@ -21,19 +22,29 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import Slide from "@mui/material/Slide";
 
+
+interface FoodItem {
+  description: string;
+  fullPrice: any;
+  halfPrice: any;
+  id: string;
+  title: string;
+  imageLink: string;
+}
+
+
 function AdminLogin() {
   const navigate = useNavigate();
 
-  const [foodList, setFoodList] = useState({});
-  const [file, setFile] = useState({} as any);
+  const [foodList, setFoodList] = useState<FoodItem[]>([]) // Initialize foodList as an array
 
-  // State variable for the food item details
   const [foodItem, setFoodItem] = useState({
     title: "",
     description: "",
     serialNo: "",
     halfPrice: "",
     fullPrice: "",
+    imageLink: "",
   });
 
   const [username, setUsername] = useState("");
@@ -41,67 +52,31 @@ function AdminLogin() {
   const [loggedIn, setLoggedIn] = useState(true);
   const [error, setError] = useState(false);
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const [per, setPerc] = useState(0);
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
     const fetchData = async () => {
-      const list: any = [];
-      const querySnapshot = await getDocs(collection(db, "foodItems"));
-      querySnapshot.forEach((doc) => list.push({ id: doc.id, ...doc.data() }));
-
-      setFoodList(list);
+      try {
+        const list:any  = [];
+        const querySnapshot = await getDocs(collection(db, "foodItems"));
+        querySnapshot.forEach((doc) => list.push({ id: doc.id, ...doc.data() }));
+        setFoodList(list);
+        setLoading(false); // Set loading to false once data is fetched
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
     };
 
     fetchData();
   }, []);
 
-  console.log(foodList);
-
   const openSnackbar = (message: string) => {
     setSnackbarMessage(message);
     setSnackbarOpen(true);
   };
-
-  useEffect(() => {
-    const uploadFile = () => {
-      const name = new Date().getTime() + file.name;
-
-      console.log(name);
-      const storageRef = ref(storage, file.name);
-      // const uploadTask = uploadBytesResumable(storageRef, file);
-
-      // uploadTask.on(
-      //   "state_changed",
-      //   (snapshot) => {
-      //     const progress =
-      //       (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      //     console.log("Upload is " + progress + "% done");
-      //     setPerc(progress);
-      //     switch (snapshot.state) {
-      //       case "paused":
-      //         console.log("Upload is paused");
-      //         break;
-      //       case "running":
-      //         console.log("Upload is running");
-      //         break;
-      //       default:
-      //         break;
-      //     }
-      //   },
-      //   (error) => {
-      //     console.log(error);
-      //   },
-      //   () => {
-      //     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-      //       setFoodItem((prev) => ({ ...prev, img: downloadURL }));
-      //     });
-      //   }
-      // );
-    };
-    file && uploadFile();
-  }, [file]);
 
   const handleLogin = () => {
     if (username === "agentlogin" && password === "hello123") {
@@ -127,31 +102,46 @@ function AdminLogin() {
   const addFoodItem = async (e: any) => {
     e.preventDefault();
 
-    // Add the food item to Firestore
     try {
       await addDoc(collection(db, "foodItems"), foodItem);
-      openSnackbar("Food item added successfully"); // Open Snackbar on success
+      openSnackbar("Food item added successfully");
       setFoodItem({
-        // Clear the input fields
         title: "",
         description: "",
         serialNo: "",
         halfPrice: "",
         fullPrice: "",
+        imageLink: "",
       });
     } catch (error) {
       console.error("Error adding food item:", error);
-      openSnackbar("Failed to add food item"); // Open Snackbar on failure
+      openSnackbar("Failed to add food item");
     }
     handleDialogClose();
   };
 
-  // Function to update the food item state
-  const updateFoodItem = (field: string, value: string | number) => {
-    setFoodItem({
-      ...foodItem,
-      [field]: value,
-    });
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const selectedFile = e.target.files[0];
+      const storageRef = ref(storage, `food-images/${selectedFile.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, selectedFile);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {},
+        (error) => {
+          console.error("Error uploading image:", error);
+        },
+        () => {
+          getDownloadURL(storageRef).then((downloadURL) => {
+            setFoodItem({
+              ...foodItem,
+              imageLink: downloadURL,
+            });
+          });
+        }
+      );
+    }
   };
 
   const handleSnackbarClose = (event: any, reason: any) => {
@@ -162,9 +152,7 @@ function AdminLogin() {
   };
 
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-    >
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
       <TextField
         label="Username"
         variant="outlined"
@@ -188,67 +176,62 @@ function AdminLogin() {
       {loggedIn && (
         <>
           <Header />
-          <List style={{ marginTop: "20px" }}>
-            <FoodItem
-              primary="Food Item 1"
-              description="Delicious food item 1"
-              serialNo="12345"
-              imageSrc={Chole}
-              halfPrice={5.99}
-              fullPrice={10.99}
-            />
-            <FoodItem
-              primary="Food Item 2"
-              description="Tasty food item 2"
-              serialNo="67890"
-              imageSrc={Salad}
-              halfPrice={4.99}
-              fullPrice={9.99}
-            />
-          </List>
+          {loading ? ( // Show loading spinner while fetching data
+            <CircularProgress />
+          ) : (
+            <List style={{ marginTop: "20px" }}>
+              {foodList.map((food) => (
+                <FoodItem
+                  key={food.id}
+                  primary={food.title}
+                  description={food.description}
+                  serialNo={food.id}
+                  imageSrc={food.imageLink || Salad} // Use imageLink or Salad as fallback
+                  halfPrice={food.halfPrice}
+                  fullPrice={food.fullPrice}
+                />
+              ))}
+            </List>
+          )}
           <Button variant="contained" onClick={handleDialogOpen}>
             Add Food Item
           </Button>{" "}
-          {/* Add button to open the dialog */}
           <Dialog open={isDialogOpen} onClose={handleDialogClose}>
             <form onSubmit={addFoodItem}>
               <DialogTitle>Add Food Item</DialogTitle>
               <div></div>
               <DialogContent>
-                {/* Input fields for food details */}
                 <TextField
                   label="Title"
                   variant="outlined"
                   value={foodItem.title}
-                  onChange={(e) => updateFoodItem("title", e.target.value)}
+                  onChange={(e) => setFoodItem({ ...foodItem, title: e.target.value })}
                 />
                 <TextField
                   label="Description"
                   variant="outlined"
                   value={foodItem.description}
-                  onChange={(e) =>
-                    updateFoodItem("description", e.target.value)
-                  }
+                  onChange={(e) => setFoodItem({ ...foodItem, description: e.target.value })}
                 />
                 <TextField
                   label="Serial No"
                   variant="outlined"
                   value={foodItem.serialNo}
-                  onChange={(e) => updateFoodItem("serialNo", e.target.value)}
+                  onChange={(e) => setFoodItem({ ...foodItem, serialNo: e.target.value })}
                 />
                 <TextField
                   label="Half Price"
                   variant="outlined"
                   value={foodItem.halfPrice}
-                  onChange={(e) => updateFoodItem("halfPrice", e.target.value)}
+                  onChange={(e) => setFoodItem({ ...foodItem, halfPrice: e.target.value })}
                 />
                 <TextField
                   label="Full Price"
                   variant="outlined"
                   value={foodItem.fullPrice}
-                  onChange={(e) => updateFoodItem("fullPrice", e.target.value)}
+                  onChange={(e) => setFoodItem({ ...foodItem, fullPrice: e.target.value })}
                 />
-                <Input type="file" onChange={(e) => updateFoodItem} />
+                <Input type="file" onChange={handleImageChange} />
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleDialogClose} color="primary">
